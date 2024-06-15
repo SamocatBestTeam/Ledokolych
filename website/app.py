@@ -46,6 +46,7 @@ def upload_file(request, upload_dir):
         return redirect(request.url)
     if file and allowed_file(file.filename):
         file.save(os.path.join(upload_dir, file.filename))
+        flash('Файл успешно загружен', 'success')
         return redirect(url_for('index'))
 
 
