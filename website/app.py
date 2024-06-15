@@ -60,6 +60,7 @@ def upload_coordinates():
         upload_file(request, app.config['UPLOAD_FOLDER'])
     return render_template('upload_coordinates.html')
 
+
 @app.route('/ships')
 def list_ships():
     return render_template('ships.html', ships=ships)
