@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Загрузка координа{% endblock %}
+
+{% block header %}Загрузка координат{% endblock %}
+
+{% block content %}
+    <form method="post" enctype="multipart/form-data">
+        <input type="file" name="file" accept=".xlsx">
+        <button type="submit">Зазгрузить</button>
+        {% include 'flash_messages.html' %}
+    </form>
+{% endblock %}
+{% set current_page_is_home = false %}
+{% block nav %}
+    {{ super() }}
+{% endblock %}

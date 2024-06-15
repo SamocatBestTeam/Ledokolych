@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Корабли{% endblock %}
+
+{% block header %}Корабли{% endblock %}
+
+{% block content %}
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Корабль</th>
+                <th>Ледовый класс</th>
+                <th>Скорость, узлы (по чистой воде)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ship in ships %}
+                <tr>
+                    <td>{{ ship.id }}</td>
+                    <td>{{ ship.name }}</td>
+                    <td>{{ ship.type }}</td>
+                    <td>{{ ship.speed }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+{% set current_page_is_home = false %}
+{% block nav %}
+    {{ super() }}
+{% endblock %}
