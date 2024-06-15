@@ -1,5 +1,4 @@
 from flask import Flask, request, render_template, redirect, url_for, flash
-from werkzeug.utils import secure_filename
 import os
 
 
@@ -84,4 +83,4 @@ def plan_schedule():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0')
