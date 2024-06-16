@@ -6,12 +6,11 @@ import pandas as pd
 import plotly.graph_objects as go
 import os
 
-
 SCRIPT_DIR = os.path.dirname(__file__)
 ALLOWED_EXTENSIONS = {'docx', 'xlsx'}
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'
-app.config['UPLOAD_FOLDER'] = os.path.join(SCRIPT_DIR,'uploads')
+app.config['UPLOAD_FOLDER'] = os.path.join(SCRIPT_DIR, 'uploads')
 
 # Mock data and functions
 ships = [
@@ -20,24 +19,10 @@ ships = [
     {'id': 3, 'name': 'АРКТИКА-2', 'type': 'arc5', 'speed': 19},
 ]
 
-def process_coordinates(file_path):
-    # Pseudo code for processing coordinates
-    pass
-
-
-def process_orders(file_path):
-    # Pseudo code for processing orders
-    pass
-
-
-def generate_gantt_chart():
-    # Pseudo code for generating Gantt chart
-    pass
-
 
 def allowed_file(filename):
     return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 def upload_file(request, upload_dir):
@@ -59,11 +44,11 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/upload_coordinates', methods=['GET', 'POST'])
-def upload_coordinates():
+@app.route('/upload_configuration', methods=['GET', 'POST'])
+def upload_configuration():
     if request.method == 'POST':
         upload_file(request, app.config['UPLOAD_FOLDER'])
-    return render_template('upload_coordinates.html')
+    return render_template('upload_configuration.html')
 
 
 @app.route('/ships')
@@ -86,49 +71,59 @@ def plan_schedule():
         return redirect(url_for('plan_schedule'))
     return render_template('plan_schedule.html')
 
+
 @app.route("/graph", methods=['GET'])
-def create_graph():   
+def create_graph():
     fig = go.Figure(go.Scattermapbox(
-    mode = "markers+lines",
-    lon = [30.3, 33],
-    lat = [59.9, 62],
-    marker = {'size': 10}))
-    
+        mode="markers+lines",
+        lon=[73.7, 72.7, 57.8, 44.6, 33.75],
+        lat=[71.3, 73.1, 70.3, 69.9, 64.95],
+        marker={'size': 10}))
+
+
     fig.add_trace(go.Scattermapbox(
-        mode = "markers+lines",
-    lon = [30.3, 33],
-    lat = [59.9, 63],
-        marker = {'size': 10}, opacity=0.5))
+        mode="markers+lines",
+        lon=[72.15, 72.7, 57.8, 44.6, 40.05],
+        lat=[71.3, 73.1, 70.3, 69.9, 64.95],
+        marker={'size': 10}, opacity=0.9))
+
+    fig.add_trace(go.Scattermapbox(
+        mode="markers+lines",
+        lon=[72.15, 72.7, 57.8, 44.6, 33.75],
+        lat=[71.3, 73.1, 70.3, 69.9, 69.5],
+        marker={'size': 10}, opacity=0.9))
 
     fig.update_layout(
-    margin ={'l':0,'t':0,'b':0,'r':0},
-    mapbox_style="white-bg",
-    mapbox_layers=[
-        {
-            "below": 'traces',
-            "sourcetype": "raster",
-            "sourceattribution": "United States Geological Survey",
-            "source": [
-                "https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryOnly/MapServer/tile/{z}/{y}/{x}"
-            ]
-        }
-      ]
-    ) 
+        margin={'l': 0, 't': 0, 'b': 0, 'r': 0},
+        mapbox_style="white-bg",
+        mapbox_layers=[
+            {
+                "below": 'traces',
+                "sourcetype": "raster",
+                "sourceattribution": "United States Geological Survey",
+                "source": [
+                    "https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryOnly/MapServer/tile/{z}/{y}/{x}"
+                ]
+            }
+        ]
+    )
 
     return fig.to_html(full_html=False)
+
 
 @app.route("/diagram", methods=['GET'])
 def create_diagram():
     df = pd.DataFrame([
-        dict(Task="Job A", Start='2009-01-01', Finish='2009-02-28', Resource="Alex"),
-        dict(Task="Job B", Start='2009-03-05', Finish='2009-04-15', Resource="Alex"),
-        dict(Task="Job C", Start='2009-02-20', Finish='2009-05-30', Resource="Max")
+        dict(Route="Новый порт - Рейд Мурманска", Start='2022-03-01', Finish='2022-03-15', Ship="ДЮК II"),
+        dict(Route="Окно в Европу - Терминал Утренний", Start='2022-03-07', Finish='2022-03-14',
+             Ship="CHRISTOPHE DE MARGERIE"),
+        dict(Route="Окно в Европу - Терминал Утренний", Start='2022-03-07', Finish='2022-03-14', Ship="BORIS VILKITSKY")
     ])
 
-    fig = px.timeline(df, x_start="Start", x_end="Finish", y="Task", color="Resource")
+    fig = px.timeline(df, x_start="Start", x_end="Finish", y="Ship", color="Route")
     fig.update_yaxes(autorange="reversed")
 
-    return fig.to_html()
+    return fig.to_html(full_html=False)
 
 
 if __name__ == '__main__':
