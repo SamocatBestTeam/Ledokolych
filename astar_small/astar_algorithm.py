@@ -9,7 +9,7 @@ def astar(astar_map, start_node, end_node, ice_class, ice_breaker=None, heuristi
     steps = 0
     nodes_created = 1
 
-    ship = Ship(19, ice_class, None, None, "Беда", None)
+    ship = Ship(22, ice_class, None, None, "Беда", None)
     start_i, start_j = astar_map.city2point[start_node]
     goal_i, goal_j = astar_map.city2point[end_node]
     estimated_dist = heuristic_func(astar_map.grid, (start_i, start_j), (goal_i, goal_j))

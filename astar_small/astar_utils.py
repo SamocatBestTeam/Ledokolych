@@ -5,7 +5,7 @@ from tqdm.notebook import tqdm
 import heapq
 
 from base_classes import Ship, correct_speed
-from geo_utils import get_length
+from geopy.distance import geodesic
 
 
 class AstarMap:
@@ -32,10 +32,13 @@ class AstarMap:
         for vertex1 in tqdm(self.edges):
             for vertex2 in self.edges[vertex1]:
                 edge_ice = defaultdict(float)
+                traversable = True
                 for mid_vertex in self.edges[vertex1][vertex2]:
                     if ice_grid.loc[mid_vertex] < 10:
-                        continue
-                    edge_ice[ice_grid.loc[mid_vertex]] = self.edges[vertex1][vertex2][mid_vertex]
+                        traversable = False
+                        break
+                    edge_ice[ice_grid.loc[mid_vertex]] += self.edges[vertex1][vertex2][mid_vertex]
+                if traversable:
                     self.info_edges[vertex1][vertex2] = edge_ice.copy()
     
     def get_neighbours(self, vertex, ship, ice_breaker=None):
@@ -49,9 +52,8 @@ class AstarMap:
                     break
                 time += self._km2seamile(dist_km) / v
                 distance += self._km2seamile(dist_km)
-            if time == np.inf:
-                continue
-            ship_edges[dst] = (distance, time)
+            if time != np.inf:
+                ship_edges[dst] = (distance, time)
         return ship_edges
     
 
@@ -123,7 +125,7 @@ class AstarTree:
 def heuristic(grid, node: tuple, goal: tuple):
     cur_lat, cur_lon = grid.loc[node].centroid.xy
     goal_lat, goal_lon = grid.loc[goal].centroid.xy
-    return get_length(cur_lat[0], cur_lon[0], goal_lat[0], goal_lon[0])
+    return geodesic((cur_lat[0], cur_lon[0]), (goal_lat[0], goal_lon[0])).km
 
 
 def get_path(node: AstarNode):
