@@ -1,12 +1,14 @@
 {% extends "base.html" %}
 
-{% block title %}Загрузка координа{% endblock %}
+{% block title %}Загрузка конфигурации{% endblock %}
 
-{% block header %}Загрузка координат{% endblock %}
+{% block header %}Загрузка конфигурации{% endblock %}
 
 {% block content %}
     <form method="post" enctype="multipart/form-data">
-        <input type="file" name="file" accept=".xlsx">
+        <input type="file" name="ice" accept=".xlsx">
+        <input type="file" name="ships" accept=".xlsx">
+        <input type="file" name="icebreakers" accept=".xlsx">
         <button type="submit">Загрузить</button>
         {% include 'flash_messages.html' %}
     </form>
