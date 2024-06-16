@@ -5,10 +5,12 @@
 {% block header %}Планирование расписания{% endblock %}
 
 {% block content %}
-    <form method="post">
-        <button type="submit">Составить расписание</button>
-    </form>
+<div id="route" class="route">
+    <iframe src="/graph" width="80%" height="600px"></iframe>
+    <iframe src="/diagram" width="80%" height="600px"></iframe>
+</div>
 {% endblock %}
+
 {% set current_page_is_home = false %}
 {% block nav %}
     {{ super() }}

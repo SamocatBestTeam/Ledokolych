@@ -1,4 +1,9 @@
 from flask import Flask, request, render_template, redirect, url_for, flash
+import matplotlib
+import matplotlib.pyplot
+import plotly.express as px
+import pandas as pd
+import plotly.graph_objects as go
 import os
 
 
@@ -80,6 +85,50 @@ def plan_schedule():
         generate_gantt_chart()
         return redirect(url_for('plan_schedule'))
     return render_template('plan_schedule.html')
+
+@app.route("/graph", methods=['GET'])
+def create_graph():   
+    fig = go.Figure(go.Scattermapbox(
+    mode = "markers+lines",
+    lon = [30.3, 33],
+    lat = [59.9, 62],
+    marker = {'size': 10}))
+    
+    fig.add_trace(go.Scattermapbox(
+        mode = "markers+lines",
+    lon = [30.3, 33],
+    lat = [59.9, 63],
+        marker = {'size': 10}, opacity=0.5))
+
+    fig.update_layout(
+    margin ={'l':0,'t':0,'b':0,'r':0},
+    mapbox_style="white-bg",
+    mapbox_layers=[
+        {
+            "below": 'traces',
+            "sourcetype": "raster",
+            "sourceattribution": "United States Geological Survey",
+            "source": [
+                "https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryOnly/MapServer/tile/{z}/{y}/{x}"
+            ]
+        }
+      ]
+    ) 
+
+    return fig.to_html(full_html=False)
+
+@app.route("/diagram", methods=['GET'])
+def create_diagram():
+    df = pd.DataFrame([
+        dict(Task="Job A", Start='2009-01-01', Finish='2009-02-28', Resource="Alex"),
+        dict(Task="Job B", Start='2009-03-05', Finish='2009-04-15', Resource="Alex"),
+        dict(Task="Job C", Start='2009-02-20', Finish='2009-05-30', Resource="Max")
+    ])
+
+    fig = px.timeline(df, x_start="Start", x_end="Finish", y="Task", color="Resource")
+    fig.update_yaxes(autorange="reversed")
+
+    return fig.to_html()
 
 
 if __name__ == '__main__':
