@@ -17,6 +17,10 @@ class AstarMap:
         self.city2point = {}
         self.point2city = {}
         for city_id, pt in zip(self.cities, self.cities.index):
+            if data_graph_points.loc[city_id].point_name == "Окно в Европу":
+                pt = (33, 10)
+            if data_graph_points.loc[city_id].point_name == "пролив Вилькицкого - восток":
+                pt = (110, 53)
             self.point2city[pt] = data_graph_points.loc[city_id].point_name
             self.city2point[data_graph_points.loc[city_id].point_name] = pt
     
@@ -128,9 +132,9 @@ def heuristic(grid, node: tuple, goal: tuple):
     return geodesic((cur_lat[0], cur_lon[0]), (goal_lat[0], goal_lon[0])).km
 
 
-def get_path(node: AstarNode):
+def get_path(node: AstarNode, reversed=False):
     path = []
     while node:
         path.append((node.i, node.j))
         node = node.parent
-    return path[::-1]
+    return path if reversed else path[::-1]
