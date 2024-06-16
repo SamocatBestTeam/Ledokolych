@@ -53,7 +53,7 @@ def correct_speed(ship: Ship, ice_value, ice_breaker: Ship = None):
         elif 4 <= ship.ice_class <= 6:
             return 0 if ice_breaker is None else min(ship.speed * 0.8, ice_breaker_speed)
         elif ship.ice_class == 7:
-            return ship.speed if ice_breaker is None else min(ship.speed * 0.6, ice_breaker_speed)
+            return ship.speed * 0.6 if ice_breaker is None else min(ship.speed, ice_breaker_speed)
         elif ship.ice_class == 9:
             return ice_value * 0.9 if ship.name in ("Таймыр", "Вайгач") else ice_value
     elif ice_value >= 10:

@@ -45,7 +45,7 @@ def get_length(lat1, lon1, lat2, lon2):
 
 
 def intersection_to_length(intersection):
-    lat1, lat2 = intersection.coords.xy[0]
-    lon1, lon2 = intersection.coords.xy[1]
+    lat1, lat2 = intersection.coords.xy[1]
+    lon1, lon2 = intersection.coords.xy[0]
     return geodesic((lat1, lon1), (lat2, lon2)).km
     # return get_length(lat1, lon1, lat2, lon2)

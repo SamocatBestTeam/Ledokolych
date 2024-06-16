@@ -58,7 +58,7 @@ class AstarMap:
     
 
 class AstarNode:
-    def __init__(self, i, j, d=0, t = 0, h = 0, f = None, parent = None, tie_breaking_func = None):
+    def __init__(self, i, j, d=0, t=0, h=0, f=None, parent=None, tie_breaking_func=None):
         self.i = i
         self.j = j
         self.d = d
@@ -123,8 +123,8 @@ class AstarTree:
 
 
 def heuristic(grid, node: tuple, goal: tuple):
-    cur_lat, cur_lon = grid.loc[node].centroid.xy
-    goal_lat, goal_lon = grid.loc[goal].centroid.xy
+    cur_lon, cur_lat = grid.loc[node].centroid.xy
+    goal_lon, goal_lat = grid.loc[goal].centroid.xy
     return geodesic((cur_lat[0], cur_lon[0]), (goal_lat[0], goal_lon[0])).km
 
 
