@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Планирование расписания{% endblock %}
+
+{% block header %}Планирование расписания{% endblock %}
+
+{% block content %}
+<div id="route" class="route">
+    <iframe src="/graph" width="80%" height="600px"></iframe>
+    <iframe src="/diagram" width="80%" height="600px"></iframe>
+</div>
+{% endblock %}
+
+{% set current_page_is_home = false %}
+{% block nav %}
+    {{ super() }}
+{% endblock %}

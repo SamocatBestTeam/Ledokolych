@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Home - NSR Scheduler{% endblock %}
+
+{% block header %}Система планирования расписания судов по СМП{% endblock %}
+
+{% block content %}
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('list_ships') }}">Корабли</a></li>
+            <li><a href="{{ url_for('upload_coordinates') }}">Загрузка координат</a></li>
+            <li><a href="{{ url_for('upload_orders') }}">Загрузка заказов</a></li>
+            <li><a href="{{ url_for('plan_schedule') }}">Планирование расписания</a></li>
+        </ul>
+    </nav>
+{% endblock %}
+{% set current_page_is_home = true %}
+{% block nav %}
+    {{ super() }}
+{% endblock %}
