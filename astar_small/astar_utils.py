@@ -41,27 +41,29 @@ class AstarMap:
     def get_neighbours(self, vertex, ship, ice_breaker=None):
         ship_edges = {}
         for dst in self.info_edges[vertex]:
-            value = 0
+            distance, time = 0, 0
             for ice_value, dist_km in self.info_edges[vertex][dst].items():
-                v = correct_speed(ship, ice_value)
+                v = correct_speed(ship, ice_value, ice_breaker=ice_breaker)
                 if v == 0:
-                    value = np.inf
+                    time = np.inf
                     break
-                value += self._km2seamile(dist_km) / correct_speed(ship, ice_value, ice_breaker=ice_breaker)
-            if value == np.inf:
+                time += self._km2seamile(dist_km) / v
+                distance += self._km2seamile(dist_km)
+            if time == np.inf:
                 continue
-            ship_edges[dst] = value
+            ship_edges[dst] = (distance, time)
         return ship_edges
     
 
 class AstarNode:
-    def __init__(self, i, j, g = 0, h = 0, f = None, parent = None, tie_breaking_func = None):
+    def __init__(self, i, j, d=0, t = 0, h = 0, f = None, parent = None, tie_breaking_func = None):
         self.i = i
         self.j = j
-        self.g = g
+        self.d = d
+        self.t = t
         self.h = h
         if f is None:
-            self.f = self.g + self.h
+            self.f = self.t + self.h
         else:
             self.f = f        
         self.parent = parent

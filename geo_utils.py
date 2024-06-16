@@ -1,5 +1,6 @@
 import numpy as np
 from shapely.affinity import scale
+from geopy.distance import geodesic
 
 
 def get_close_points(i, j, grid, dx=0.1, dy=0.1, xfact=1.1, yfact=1.1):
@@ -46,4 +47,5 @@ def get_length(lat1, lon1, lat2, lon2):
 def intersection_to_length(intersection):
     lat1, lat2 = intersection.coords.xy[0]
     lon1, lon2 = intersection.coords.xy[1]
-    return get_length(lat1, lon1, lat2, lon2)
+    return geodesic((lat1, lon1), (lat2, lon2))
+    # return get_length(lat1, lon1, lat2, lon2)

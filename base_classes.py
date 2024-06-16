@@ -14,6 +14,19 @@ class Ship:
     start_date: pd.Timestamp
 
 
+def map_ice_class(ice_class):
+    if ice_class.lower() == "нет":
+        return 0
+    else:
+        ic = int(ice_class[4:])
+        if ic == 7 or ic == 9:
+            return ic
+        elif 4 <= ic <= 6:
+            return 4
+        else:
+            raise ValueError("Invalid ship's ice class value!")
+
+
 def correct_speed(ship: Ship, ice_value, ice_breaker: Ship = None):
     """
     Calculates certain ship speed depending on an ice class, ice heaviness and
